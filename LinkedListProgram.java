@@ -4,7 +4,9 @@
 /*
 * the class Node will have basic structure of a node in the linkedlist
 */
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /*Functionalities in program
 * 1. Get Size
@@ -56,7 +58,6 @@ class LinkedList extends Node {
 	*/	
 	public String printLinkedList() {
 		StringBuilder result = new StringBuilder( "[index:value]--> " );
-		System.out.println("Inside");
 		if ( listCount == 0 ) 
 		{
 			result = result.append(" [null]");	
@@ -151,12 +152,13 @@ class LinkedList extends Node {
 		int counter  = 0;
 		boolean bValueFound = false;
 		while ( counter < listCount) {
-			if ( tempPtr.getData() == value) {
+			if ( value == tempPtr.getData()) {
 				bValueFound = true;
 				break;
 			}
 			else {
 				tempPtr = tempPtr.getNext();
+				counter++;
 			}	
 		}	
 		if ( !bValueFound) 
@@ -205,7 +207,7 @@ public class LinkedListProgram {
 	/**
 	* 
 	*/
-	public static void executeOperations(LinkedList list,BufferedReader br) {
+	public static void executeOperations(LinkedList list,BufferedReader br) throws IOException{
 		char ch = 'n';
 		int choice;
 		int K;
@@ -236,7 +238,7 @@ public class LinkedListProgram {
 					case 4:
 						System.out.println("Enter the index to display from head:");
 						K = Integer.parseInt(br.readLine());
-						System.out.println(K + " element is :" + list.get(K));
+						System.out.println(K + " element is :" + list.get(K-1));
 						break;
 					case 5:
 						System.out.println("Enter the index to display( from the end ) :");
@@ -277,6 +279,10 @@ public class LinkedListProgram {
 				System.out.println("Please enter valid number !");
 				ch = 'y';
 			}
+			System.out.println("List elements");
+			System.out.println(list.printLinkedList());
+			System.out.println("Do you want to continue ? (y/n)");
+			ch = br.readLine().charAt(0);
 		} while( ch == 'y' || ch == 'Y');
 		
 	}	
@@ -297,7 +303,12 @@ public class LinkedListProgram {
 				catch(Exception ex) { // invalid characters are ignored
 				}	
 			}
-			LinkedListProgram.executeOperations(list,br);
+			if ( elements.length > 0) {
+				LinkedListProgram.executeOperations(list,br);
+			}
+			else {
+				System.out.println("No elements present in list ! Exiting...");
+			}		
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
