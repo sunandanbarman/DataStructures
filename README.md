@@ -16,3 +16,6 @@ Functionalities in program
 8. Remove by index
 9. Search element by value
 
+2. Doubly linked list with all the operations supported in (1) plus printing list in reverse 
+
+
