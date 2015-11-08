@@ -19,6 +19,35 @@ import java.io.InputStreamReader;
 * 8. Remove by index
 * 9. Search element by value
 */
+//Class Node representing one node of the linked list
+class Node {
+	Node next;
+	Integer data;
+   //Only the "data" object is passed, when we want to create a node that we don't want to point to anything ( just yet )
+   // E.g. the head node
+   
+	Node() {
+		next = null;
+		data = null;
+	}	
+	Node(Integer data) {
+		next = null;
+		this.data = data;	
+	}
+	public Integer getData() {
+		return this.data;
+	}	
+	public void setData(Integer data) {
+		this.data = data;
+	}	
+	public Node getNext() {
+		return this.next;
+	}	
+	public void setNext(Node next) {
+		this.next = next;
+	}		
+}
+
 class LinkedList extends Node {
 	private Node head;
 	private boolean bHeadIsEmpty;
@@ -172,35 +201,70 @@ class LinkedList extends Node {
 	public boolean removeLast() {
 		return remove(listCount-1);
 	}
-		
-	//Class Node representing one node of the linked list
-	private class Node {
-		Node next;
-		Integer data;
-	   //Only the "data" object is passed, when we want to create a node that we don't want to point to anything ( just yet )
-	   // E.g. the head node
-	   
-		Node() {
-			next = null;
-			data = null;
+
+	/**
+	*
+	*/
+	public boolean findIfSequenceIsBitonic() {
+		if ( listCount <= 0 ) {
+			System.out.println("List is empty !");
+			return false;
 		}	
-		Node(Integer data) {
-			next = null;
-			this.data = data;	
+		Node temp = head;
+		int item1   = temp.getData();
+		int nIsInc = 0, nIsDec = 0, nLow, max, low; //keep count of how many times sequence was increasing/decreasing
+		int val;
+		max = item1;
+		low = item1;
+		boolean bIsInc = false, bIsDec = false;
+		while ( temp.getNext() != null ) { 
+				temp = temp.getNext();
+				
+				val  = temp.getData();
+				if ( max < val ) { //keep track of largest element
+					max = val;
+				}
+				if ( low > val ) { //keep track of lowest element
+					low = val;
+				}
+				if ( item1 < val ) {  //increasing sequence
+					if (!bIsInc && bIsDec) { // if there occurs another increasing sequence after a decreasing one
+						bIsInc = true;
+						bIsDec = false;
+						nIsInc++;
+					}
+					if ( nIsInc == 0 ) { //initial condition, if sequence starts in increasing manner
+						nIsInc++;
+						bIsInc = true;
+					}
+					item1 = temp.getData();
+
+					
+				}
+				else { //non-increasing sequence
+					if (bIsInc && !bIsDec) { // if there occurs another decreasing sequence after a increasing one
+						bIsInc = false;
+						bIsDec = true;
+						nIsDec++;
+					}
+					if ( nIsDec == 0 ) { //initial condition, if sequence starts in decreasing manner
+						nIsDec++;
+						bIsDec = true;
+					}
+					item1 = temp.getData();
+				}
 		}
-		public Integer getData() {
-			return this.data;
+		if ( (nIsInc == 1) && (nIsDec == 1) ) {
+			System.out.println("Sequence is bitonic\n"+"Sequence max is :" + max + "\nLowest is " + low);
+			return true;
 		}	
-		public void setData(Integer data) {
-			this.data = data;
+		else {
+			System.out.println("Sequence is not Bitonic. Increasing sequence and decreasing sequence count are ->");
+			System.out.println(nIsInc + ":" + nIsDec);
+			
+			return false;	
 		}	
-		public Node getNext() {
-			return this.next;
-		}	
-		public void setNext(Node next) {
-			this.next = next;
-		}		
-	}		
+	}	
 }	
 
 public class LinkedListProgram {
@@ -221,7 +285,8 @@ public class LinkedListProgram {
 								+ "6. Remove head element\n"
 								+ "7. Remove tail element\n"
 								+ "8. Remove by index\n"
-								+ "9. Search element by value\n");								
+								+ "9. Search element by value\n"
+								+ "10.Check if sequence is bitonic\n");								
 			System.out.println("Enter your choice :");
 			try {
 				choice = Integer.parseInt(br.readLine());	
@@ -264,6 +329,9 @@ public class LinkedListProgram {
 							System.out.println("Element found at index :"+ index);
 						else
 							System.out.println("Element not found !");
+						break;
+					case 10:
+						list.findIfSequenceIsBitonic();
 						break;
 					default:
 					{
