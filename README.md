@@ -19,4 +19,10 @@ Functionalities in program
 
 2. Doubly linked list with all the operations supported in (1) plus printing list in reverse 
 
+3. Stack using 3 different implementations : a) Arrays b) Linked lists c) Queues
+
+4. Stack for generic data type with custom iterator added
+
+5. StringBuilder implementation using a char[] array ( as is used in Java )
+
 
