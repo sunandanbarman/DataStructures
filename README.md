@@ -25,4 +25,15 @@ Functionalities in program
 
 5. StringBuilder implementation using a char[] array ( as is used in Java )
 
+6. Priority Queue ( Min and Max) with following operations supported :
+	For Max priority queue
+	a. ExtractMax
+	b. IncreaseKey(x,k) where k>= x
+	c. Insert(x)
+	For min priority queue
+	a. ExtractMin
+	b. DecreaseKey(x,k) where k<= x
+	c. Insert(x)
+	Priority queues are heaps, hence the program will follow the convention heap for ease.
 
+7. Queue implementation using both arrays and linked lists
