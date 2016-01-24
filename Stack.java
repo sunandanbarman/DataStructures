@@ -8,6 +8,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Queue;
+import java.util.LinkedList;
 
 class StackException extends Exception {
 	private static final long serialVersionUID = -3167800557469016257L;
@@ -152,8 +154,57 @@ class StackUsingLinkedList<T>{
 
 }
 
-class StackUsingQueues {
-	
+/**
+* NOTE : This is not  a practical implementation, only an academic exercise.
+* there can be 2 ways to implement stacks using 2 queues :
+* a. Making pop costly, push in O(1)
+	 Push all items to Q1. This is O(1)
+	 For pop, we remove all items from Q1 and move it to Q2, except for last item. Pop last item from Q1
+	 This is O(n) operation. Swap names from Q1 and Q2
+	 
+* b. Making push costly, pop in O(1)
+	 Pop item from Q1. This is O(1) time
+	 For push, we push item in Q2. Pop all items from Q2 and move them to Q1. This way last element inserted in Q2 comes in front of Q1. 
+	 This is O(n) operation. Swap names from Q1 and Q2
+*/
+// Following strategy "a"
+class StackUsingQueues<Item> {
+	Queue<Item> q1 , q2;
+	private int size;
+	StackUsingQueues() {
+		q1 = new LinkedList<>();
+		q2 = new LinkedList<>();
+	}	
+	public boolean  push(Item item) {
+		if ( q1== null)
+			return false;
+		size++;
+		return q1.offer(item);
+	}
+	public Item pop() {
+		while(q1.size() > 1) { //poll everything except the last element
+			q2.offer(q1.poll());
+		}
+		Item data = q1.poll();
+		Queue<Item> qTemp = q1; //swap Q2 and Q1
+		q1 = q2;
+		q2 = qTemp;
+		size--;
+		return data;
+	}
+	public boolean isEmpty() {
+		return (size ==0);// all elements in q2 plus head of q1
+	}
+	public int getSize() {
+		return size;
+	}
+	public String print() {
+		StringBuilder sb = new StringBuilder();
+		for(Item item:q1) 
+			sb = sb.append("[ " + item + " ]");
+		return sb.toString();
+		
+	}
 }
 
 class Stack {
@@ -171,7 +222,23 @@ class Stack {
 			if (elements.length == 0) {
 				System.out.println("No elements given ! Exiting...");
 				return;
-			}	
+			}
+			StackUsingQueues<Integer> stack = new StackUsingQueues<>();
+			for ( String str:elements ) {
+				str = str.trim();
+				try	{
+					stack.push(new Integer(Integer.parseInt(str)));
+				}
+				catch(Exception ex) { // invalid characters are ignored
+					ex.printStackTrace();
+				}	
+
+			}
+			System.out.println("POP :" + stack.pop());
+			System.out.println("Elements :" + stack.print());
+			System.out.println("POP :" + stack.pop());
+			System.out.println("Elements :" + stack.print());
+
 			/*StackUsingArrays stack = new StackUsingArrays(elements.length);
 			for ( String str:elements ) {
 				str = str.trim();
@@ -191,7 +258,7 @@ class Stack {
 			stack.clear();
 			System.out.println(stack.print());
 			*/
-			StackUsingLinkedList<Integer> stack_ = new StackUsingLinkedList<>();
+			/*StackUsingLinkedList<Integer> stack_ = new StackUsingLinkedList<>();
 			for ( String str:elements ) {
 				str = str.trim();
 				try	{
@@ -208,8 +275,8 @@ class Stack {
 			System.out.println("stack size is " +stack_.getStackSize());
 			System.out.println("Top element is :" +String.valueOf(stack_.pop().getData()));
 			/*System.out.println("Top is " + stack.pop());
-			stack.clear();*/
-			System.out.println(stack_.print());
+			stack.clear();
+			System.out.println(stack_.print());*/
 			
 		}
 		catch(Exception ex) {
