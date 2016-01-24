@@ -37,3 +37,6 @@ Functionalities in program
 	Priority queues are heaps, hence the program will follow the convention heap for ease.
 
 7. Queue implementation using both arrays and linked lists
+
+8. Implemented Blocking Semaphore, Counting semaphore, and signalling semaphore using primitve objects and wait(), notify() mechanism.
+	Inspired by : http://tutorials.jenkov.com/java-concurrency/semaphores.html
